@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Production build outputs
+dist/
+*/dist/
+**/dist/
+.next/
+*/.next/
+**/.next/
+out/
+build/
+
+# TypeScript cache & build info
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Logs
+logs/
+*/logs/
+**/logs/
+*.log
+**/*.log
+
+# Database & SQLite files
+data/
+*/data/
+**/data/
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
+
+# User uploads & ephemeral files
+uploads/
+*/uploads/
+**/uploads/
+
+# Environment configurations & secrets
+.env
+.env.local
+.env.*.local
+*.env
+!*.env.example
+!.env.example
+
+# IDE and OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+coverage/
+scripts/*.tmp.*
