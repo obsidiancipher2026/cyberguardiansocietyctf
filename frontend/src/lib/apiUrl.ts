@@ -3,7 +3,7 @@ export const API_BASE_URL =
   (typeof window !== "undefined"
     ? window.location.origin.includes("localhost:3000")
       ? "http://localhost:4000/api"
-      : "/api/backend"
+      : "/api"
     : process.env.NODE_ENV === "production"
-    ? "/api/backend"
+    ? "/api"
     : "http://localhost:4000/api");
