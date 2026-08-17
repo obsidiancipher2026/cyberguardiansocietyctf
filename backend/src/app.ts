@@ -92,6 +92,14 @@ export function createApp() {
     next();
   });
 
+  // Support /api/backend prefix from Vercel multi-service rewrites
+  app.use((req, _res, next) => {
+    if (req.url.startsWith("/api/backend")) {
+      req.url = req.url.replace(/^\/api\/backend/, "/api");
+    }
+    next();
+  });
+
   app.get("/api/healthz", (_req, res) => res.json({ ok: true }));
 
   app.use(maintenanceGuard);
