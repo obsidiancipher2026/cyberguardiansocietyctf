@@ -54,3 +54,5 @@ Thumbs.db
 .idea/
 coverage/
 scripts/*.tmp.*
+
+.vercel
