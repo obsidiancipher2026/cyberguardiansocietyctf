@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "./apiUrl";
+
 /**
  * Public realtime SSE client (unauthenticated push channel).
  * The backend broadcasts named events — `competition`, `scoreboard`,
@@ -10,7 +12,7 @@ export function connectRealtime(
 ) {
   if (typeof window === "undefined") return () => {};
 
-  const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+  const base = API_BASE_URL;
   const eventSource = new EventSource(`${base}/events/events`);
 
   eventSource.onopen = () => onOpen?.();

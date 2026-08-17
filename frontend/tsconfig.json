@@ -24,6 +24,10 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@cgs-ctf/shared": [
+        "../shared/src",
+        "../shared/dist"
       ]
     },
     "target": "ES2017"

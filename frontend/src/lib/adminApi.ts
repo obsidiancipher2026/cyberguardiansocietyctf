@@ -1,7 +1,6 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { ADMIN_SLUG, clearAdminToken, getAdminToken, setAdminToken } from "./adminConfig";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+import { API_BASE_URL } from "./apiUrl";
 
 /**
  * Admin vault API client. Every request carries the secret vault header

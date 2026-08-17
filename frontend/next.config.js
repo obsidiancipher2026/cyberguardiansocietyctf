@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: "standalone",
+  transpilePackages: ["@cgs-ctf/shared"],
   images: { unoptimized: true },
 };
 

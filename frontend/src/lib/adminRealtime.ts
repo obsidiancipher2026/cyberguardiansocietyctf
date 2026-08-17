@@ -1,4 +1,5 @@
 import { ADMIN_SLUG, getAdminToken } from "./adminConfig";
+import { API_BASE_URL } from "./apiUrl";
 
 /**
  * Authenticated SSE client for the admin-only security event stream.
@@ -12,7 +13,7 @@ export function connectAdminEvents(onEvent: (event: string, data: any) => void, 
   let controller: AbortController | null = null;
   let retryTimer: ReturnType<typeof setTimeout> | null = null;
 
-  const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+  const base = API_BASE_URL;
 
   async function connect() {
     if (closed) return;

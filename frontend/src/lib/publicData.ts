@@ -6,8 +6,9 @@
  * bursts into one in-flight request and serves a short-TTL cache, cutting
  * backend chatter on every page load without adding staleness risk.
  */
+import { API_BASE_URL } from "./apiUrl";
 
-const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+const base = API_BASE_URL;
 
 const inflight = new Map<string, Promise<unknown>>();
 const cache = new Map<string, { at: number; value: unknown }>();
