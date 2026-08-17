@@ -41,7 +41,13 @@ export function createApp() {
     })
   );
 
-  const allowedOrigins = config.frontendOrigins.map((o) => o.replace(/\/$/, ""));
+  const allowedOrigins = [
+    ...config.frontendOrigins,
+    config.appUrl,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "",
+  ]
+    .filter(Boolean)
+    .map((o) => o.replace(/\/$/, ""));
 
   app.use(
     cors({
@@ -51,7 +57,12 @@ export function createApp() {
           return;
         }
         const normalized = origin.replace(/\/$/, "");
-        if (allowedOrigins.includes(normalized)) {
+        if (
+          allowedOrigins.includes(normalized) ||
+          normalized.endsWith(".vercel.app") ||
+          normalized.includes("localhost") ||
+          normalized.includes("127.0.0.1")
+        ) {
           cb(null, true);
           return;
         }

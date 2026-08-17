@@ -5,25 +5,42 @@ import { config } from "../config";
 
 function buildOptions(): Options {
   if (config.db.dialect === "postgres") {
-    return {
+    const useSsl = process.env.DB_SSL === "true" || (config.isProd && process.env.DB_SSL !== "false");
+    const options: Options = {
       dialect: "postgres",
-      host: config.db.host,
-      port: config.db.port,
-      database: config.db.database,
-      username: config.db.username,
-      password: config.db.password,
       logging: config.db.logging,
       pool: { max: 10, min: 1, idle: 10_000 },
     };
+    if (useSsl) {
+      options.dialectOptions = {
+        ssl: { require: true, rejectUnauthorized: false },
+      };
+    }
+    if (!config.db.url) {
+      options.host = config.db.host;
+      options.port = config.db.port;
+      options.database = config.db.database;
+      options.username = config.db.username;
+      options.password = config.db.password;
+    }
+    return options;
   }
 
   // Resolve a relative storage path against the backend package root so the
   // database is always the same file regardless of the process working
   // directory (npm always runs the backend workspace from <repo>/backend).
-  const storage = path.isAbsolute(config.db.storage)
-    ? config.db.storage
-    : path.resolve(__dirname, "..", "..", config.db.storage);
-  fs.mkdirSync(path.dirname(storage), { recursive: true });
+  let rawStorage = config.db.storage;
+  if (process.env.VERCEL && !path.isAbsolute(rawStorage) && !rawStorage.startsWith("/tmp")) {
+    rawStorage = "/tmp/cgs-ctf.sqlite";
+  }
+  const storage = path.isAbsolute(rawStorage)
+    ? rawStorage
+    : path.resolve(__dirname, "..", "..", rawStorage);
+  try {
+    fs.mkdirSync(path.dirname(storage), { recursive: true });
+  } catch {
+    // Ignore if directory already exists
+  }
   return {
     dialect: "sqlite",
     storage,
@@ -31,7 +48,9 @@ function buildOptions(): Options {
   };
 }
 
-export const sequelize = new Sequelize(buildOptions());
+export const sequelize = config.db.url
+  ? new Sequelize(config.db.url, buildOptions())
+  : new Sequelize(buildOptions());
 
 export async function connectDb(): Promise<void> {
   await sequelize.authenticate();

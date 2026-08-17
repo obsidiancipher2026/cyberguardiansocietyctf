@@ -24,7 +24,8 @@ export const config = {
     .filter(Boolean),
 
   db: {
-    dialect: (process.env.DB_DIALECT || "sqlite") as "sqlite" | "postgres",
+    dialect: ((process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.DB_URL) ? "postgres" : (process.env.DB_DIALECT || "sqlite")) as "sqlite" | "postgres",
+    url: process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.DB_URL,
     storage: process.env.DB_STORAGE || "./data/cgs-ctf.sqlite",
     host: process.env.DB_HOST || "localhost",
     port: num(process.env.DB_PORT, 5432),
